@@ -1,0 +1,14 @@
+[
+    {
+        "type": "income",
+        "category": "business",
+        "amount": 3000.0,
+        "timestamp": "2025-05-15 15:24:15"
+    },
+    {
+        "type": "expense",
+        "category": "travel",
+        "amount": 250.0,
+        "timestamp": "2025-05-15 15:24:57"
+    }
+]
