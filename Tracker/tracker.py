@@ -12,9 +12,27 @@ class Tracker:
         self.transaction_type = ""
         self.transaction_category = ""
         self.amount = 0.0
-        self.timestamp = time.time()
-        self.balance = INITIAL_BALANCE
         self._load_transactions()
+
+    def __len__(self):
+        return len(self.transactions)
+
+    def __str__(self):
+        return f"Finance Tracker | Current Balance: ${self.balance:.2f} | Transactions: {len(self.transactions)}"
+
+    @property
+    def balance(self):
+        total = 0
+        if not self.transactions:
+            return INITIAL_BALANCE
+        
+        for item in self.transactions:
+            amt = float(item.get("amount",0))
+            if item.get("transaction_type") == "income":
+                total +=amt
+            else:
+                total -=amt
+        return total
 
 
     def _get_income_category(self):
@@ -79,17 +97,12 @@ class Tracker:
             except ValueError:
                 print("❌ Invalid amount. Please enter a numeric value.")
                 
-
-        if transaction_choice == "1":
-            self.balance += amount
-        else:
-            self.balance -= amount  
-        
+       
         self.timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
 
         record = {
-            "type" : self.transaction_type,
-            "category" : self.transaction_category,
+            "transaction_type" : self.transaction_type,
+            "transaction_category" : self.transaction_category,
             "amount" : self.amount,
             "timestamp" : self.timestamp
         }
@@ -123,17 +136,10 @@ class Tracker:
                 with open(self.filepath,"r") as f:
                     data = json.load(f)
                     self.transactions = data
-                    # updating the balance
-                    for item in self.transactions:
-                        if item.get("type") == "income":
-                            self.balance +=float(item.get("amount",0))
-                        else:
-                            self.balance -=float(item.get("amount",0))
                     print(f"Your current balance: $ {self.balance} ")
                     print("________________________________")
             else:
                 self.transactions = []
-                self.balance = INITIAL_BALANCE
 
         except json.JSONDecodeError:
             print("❌ Error: records.json contains invalid JSON.")
@@ -145,7 +151,7 @@ class Tracker:
             print(f"{'No.':<4} {'Type':<10} {'Category':<18} {'Amount':<10} {'Timestamp'}")
             print("-" * 70)
             for i, item in enumerate(self.transactions, start=1):
-                print(f"{i:<4} {item.get('type', ''):<10} {item.get('category', ''):<18} "
+                print(f"{i:<4} {item.get('transaction_type', ''):<10} {item.get('transaction_category', ''):<18} "
                     f"{item.get('amount', 0):<10.2f} {item.get('timestamp', '')}")
             print("-" * 70)
             # "Balance" under Type, balance value under Amount

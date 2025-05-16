@@ -1,14 +1,20 @@
 [
     {
-        "type": "income",
-        "category": "business",
-        "amount": 3000.0,
-        "timestamp": "2025-05-15 15:24:15"
+        "transaction_type": "income",
+        "transaction_category": "salary",
+        "amount": 2000.0,
+        "timestamp": "2025-05-16 10:50:56"
     },
     {
-        "type": "expense",
-        "category": "travel",
+        "transaction_type": "expense",
+        "transaction_category": "bills",
         "amount": 250.0,
-        "timestamp": "2025-05-15 15:24:57"
+        "timestamp": "2025-05-16 10:51:19"
+    },
+    {
+        "transaction_type": "expense",
+        "transaction_category": "travel",
+        "amount": 112.0,
+        "timestamp": "2025-05-16 10:51:34"
     }
 ]
